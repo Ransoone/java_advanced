@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -12,17 +14,39 @@ public class Main {
         System.out.println("Выберите действие:");
         System.out.println("1. Калькулятор");
         System.out.println("2. Поиск самого длинного слова в массиве");
+        System.out.println("3. Максимальный отрицательный и минимальный положительный элементы массива");
 
         int choice = scanner.nextInt();
 
         switch (choice) {
             case 1:
                 Calculator calculator = new Calculator();
-                calculator.calculate();
+                System.out.print("Введите первое число: ");
+                double num1 = scanner.nextDouble();
+                calculator.setNum1(num1);
+
+                System.out.print("Введите второе число: ");
+                double num2 = scanner.nextDouble();
+                calculator.setNum2(num2);
+
+                System.out.print("Выберите операцию (+, -, *, /): ");
+                char operation = scanner.next().charAt(0);
+                calculator.setOperation(operation);
+
+                try {
+                    double result = calculator.getResult();
+                    System.out.println("Результат: " + result);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Ошибка: " + e.getMessage());
+                }
                 break;
             case 2:
                 WordFinder wordFinder = new WordFinder();
                 wordFinder.findLongestWord();
+                break;
+            case 3:
+                ArrayManipulator arrayManipulator = new ArrayManipulator();
+                arrayManipulator.manipulateArray();
                 break;
             default:
                 System.out.println("Неверный выбор!");
@@ -30,61 +54,6 @@ public class Main {
 
         scanner.close();
     }
-
-    public static class Calculator {
-
-        /**
-         * Метод, реализующий калькулятор.
-         */
-        public static void calculate() {
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.print("Введите первое число: ");
-            double num1 = scanner.nextDouble();
-
-            System.out.print("Введите второе число: ");
-            double num2 = scanner.nextDouble();
-
-            System.out.print("Выберите операцию (+, -, *, /): ");
-            char operation = scanner.next().charAt(0);
-
-            double result = calculateNumbers(num1, num2, operation);
-
-            System.out.println("Результат: " + result);
-
-            scanner.close();
-        }
-
-        /**
-         * Метод, реализующий вычисление над двумя числами.
-         *
-         * @param num1      Первое число.
-         * @param num2      Второе число.
-         * @param operation Выбранная операция (+, -, *, /).
-         * @return Результат операции.
-         */
-        public static double calculateNumbers(double num1, double num2, char operation) {
-            switch (operation) {
-                case '+':
-                    return num1 + num2;
-                case '-':
-                    return num1 - num2;
-                case '*':
-                    return num1 * num2;
-                case '/':
-                    if (num2 != 0) {
-                        return num1 / num2;
-                    } else {
-                        System.out.println("Деление на ноль невозможно!");
-                        return Double.NaN;
-                    }
-                default:
-                    System.out.println("Неверная операция!");
-                    return Double.NaN;
-            }
-        }
-    }
-
     public static class WordFinder {
         /**
          * Метод, запрашивающий у пользователя длину массива и его элементы, находящий самое длинное слово в массиве.
@@ -118,6 +87,46 @@ public class Main {
 
             scanner.close();
         }
+        public static class ArrayManipulator {
+            public static void manipulateArray() {
+                // Ваш код для манипулирования массивом
+                // Например, можно вставить код из предыдущего примера с некоторыми изменениями
+            }
+        }
+    }
+    public static class ArrayManipulator {
+        public static void manipulateArray() {
+            // Создаем массив размерностью 20
+            int[] array = new int[20];
 
+            // Заполняем массив случайными целыми числами от -10 до 10
+            Random random = new Random();
+            for (int i = 0; i < array.length; i++) {
+                array[i] = random.nextInt(21) - 10; // Генерация чисел от -10 до 10
+            }
+            System.out.println("Исходный массив: " + Arrays.toString(array));
+            // Находим максимальный отрицательный и минимальный положительный элементы массива
+            int maxNegative = Integer.MIN_VALUE;
+            int minPositive = Integer.MAX_VALUE;
+            for (int num : array) {
+                if (num < 0 && num > maxNegative) {
+                    maxNegative = num;
+                } else if (num > 0 && num < minPositive) {
+                    minPositive = num;
+                }
+            }
+
+            // Поменяем местами максимальный отрицательный и минимальный положительный элементы массива
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == maxNegative) {
+                    array[i] = minPositive;
+                } else if (array[i] == minPositive) {
+                    array[i] = maxNegative;
+                }
+            }
+
+            // Выводим исходный и измененный массивы
+            System.out.println("Измененный массив: " + Arrays.toString(array));
+        }
     }
 }
