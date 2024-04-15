@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.Sweet_gift.Candy;
+import org.example.Sweet_gift.GiftBox;
+import org.example.Sweet_gift.JellyBean;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -15,6 +19,7 @@ public class Main {
         System.out.println("1. Калькулятор");
         System.out.println("2. Поиск самого длинного слова в массиве");
         System.out.println("3. Максимальный отрицательный и минимальный положительный элементы массива");
+        System.out.println("4. Сборка сладкого подарка");
 
         int choice = scanner.nextInt();
 
@@ -48,12 +53,16 @@ public class Main {
                 ArrayManipulator arrayManipulator = new ArrayManipulator();
                 arrayManipulator.manipulateArray();
                 break;
+            case 4:
+                SweetBox sweetBox = new SweetBox();
+                break;
             default:
                 System.out.println("Неверный выбор!");
         }
 
         scanner.close();
     }
+
     public static class WordFinder {
         /**
          * Метод, запрашивающий у пользователя длину массива и его элементы, находящий самое длинное слово в массиве.
@@ -87,6 +96,7 @@ public class Main {
 
             scanner.close();
         }
+
         public static class ArrayManipulator {
             public static void manipulateArray() {
                 // Ваш код для манипулирования массивом
@@ -94,6 +104,7 @@ public class Main {
             }
         }
     }
+
     public static class ArrayManipulator {
         public static void manipulateArray() {
             // Создаем массив размерностью 20
@@ -127,6 +138,62 @@ public class Main {
 
             // Выводим исходный и измененный массивы
             System.out.println("Измененный массив: " + Arrays.toString(array));
+        }
+    }
+
+    public static class SweetBox {
+        public SweetBox() {
+            Scanner scanner = new Scanner(System.in);
+            GiftBox giftBox = new GiftBox();
+
+            while (true) {
+                System.out.println("Выберите действие:");
+                System.out.println("1. Добавить обычную сладость");
+                System.out.println("2. Добавить мармеладки");
+                System.out.println("3. Завершить формирование подарка");
+
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Очистка буфера
+
+                if (choice == 1) {
+                    Candy candy = new Candy();
+                    System.out.print("Введите название сладости: ");
+                    candy.setName(scanner.nextLine());
+                    System.out.print("Введите вес сладости (в граммах): ");
+                    candy.setWeight(scanner.nextDouble());
+                    System.out.print("Введите цену сладости: ");
+                    candy.setPrice(scanner.nextDouble());
+                    scanner.nextLine(); // Очистка буфера
+
+                    System.out.print("Введите количество сладостей: ");
+                    int quantity = scanner.nextInt();
+                    scanner.nextLine(); // Очистка буфера
+
+                    giftBox.addCandy(candy, quantity);
+                } else if (choice == 2) {
+                    JellyBean jellybean = new JellyBean();
+                    System.out.print("Введите название сладости: ");
+                    jellybean.setName(scanner.nextLine());
+                    System.out.print("Введите вес сладости (в граммах): ");
+                    jellybean.setWeight(scanner.nextDouble());
+                    System.out.print("Введите цену сладости: ");
+                    jellybean.setPrice(scanner.nextDouble());
+                    scanner.nextLine(); // Очистка буфера
+                    System.out.print("Введите цвет мармеладок: ");
+                    jellybean.setColor(scanner.nextLine());
+
+                    System.out.print("Введите количество сладостей: ");
+                    int quantity = scanner.nextInt();
+                    scanner.nextLine(); // Очистка буфера
+
+                    giftBox.addCandy(jellybean, quantity);
+                } else if (choice == 3) {
+                    break;
+                } else {
+                    System.out.println("Неверный выбор!");
+                }
+            }
+            giftBox.printGiftInfo();
         }
     }
 }
