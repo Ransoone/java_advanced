@@ -34,7 +34,8 @@ public class Calculator {
                 case '/':
                     if (num2 != 0) {
                         result = num1 / num2;
-                    } else {
+                    }
+                    else {
                         throw new IllegalArgumentException("Деление на ноль невозможно!");
                     }
                     break;
