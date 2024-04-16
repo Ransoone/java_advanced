@@ -3,10 +3,13 @@ package org.example;
 import org.example.Sweet_gift.Candy;
 import org.example.Sweet_gift.GiftBox;
 import org.example.Sweet_gift.JellyBean;
-
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class Main {
     /**
@@ -20,6 +23,7 @@ public class Main {
         System.out.println("2. Поиск самого длинного слова в массиве");
         System.out.println("3. Максимальный отрицательный и минимальный положительный элементы массива");
         System.out.println("4. Сборка сладкого подарка");
+        System.out.println("5. Подсчет слов в файле");
 
         int choice = scanner.nextInt();
 
@@ -55,6 +59,9 @@ public class Main {
                 break;
             case 4:
                 SweetBox sweetBox = new SweetBox();
+                break;
+            case 5:
+                countWordsInFile(scanner);
                 break;
             default:
                 System.out.println("Неверный выбор!");
@@ -195,5 +202,41 @@ public class Main {
             }
             giftBox.printGiftInfo();
         }
+    }
+    private static void countWordsInFile(Scanner scanner) {
+        System.out.print("Введите полный путь к файлу: ");
+        String fileName = scanner.next();
+        Map<String, Integer> wordCount = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] words = line.split(" ");
+                for (String word : words) {
+                    wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Сортировка слов в алфавитном порядке
+        List<String> sortedWords = new ArrayList<>(wordCount.keySet());
+        Collections.sort(sortedWords);
+
+        System.out.println("Статистика встречаемости слов:");
+        for (String word : sortedWords) {
+            System.out.println(word + ": " + wordCount.get(word));
+        }
+
+        // Нахождение слова с максимальным количеством повторений
+        String maxWord = null;
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : wordCount.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                maxWord = entry.getKey();
+            }
+        }
+        System.out.println("\nСлово с максимальным количеством повторений: " + maxWord + " (" + maxCount + " раз)");
     }
 }
